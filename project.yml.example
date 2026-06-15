@@ -1,0 +1,74 @@
+# project.yml — single source of truth for a project's Claude config.
+#
+# Copy this to <your-project>/.claude/project.yml and fill in the values. The
+# app-platform plugin's agents and skills read THIS file for every
+# project-specific value, so the plugin logic stays identical across all projects.
+#
+# To onboard a new project: copy this file, change the values, add the
+# .claude/settings.json snippet from the README. That's it.
+schema: 1
+
+# ── Identity ────────────────────────────────────────────────────────────────
+name: example-project
+slug: example-project                  # used in branch names, labels, log prefixes
+domain: example.com                    # public URL host
+admin_email: you@example.com           # default issue assignee / approval admin
+
+# ── GitHub ──────────────────────────────────────────────────────────────────
+github:
+  org: example-org
+  repos:                               # logical name -> owner/repo
+    api: example-org/api
+    dashboard: example-org/dashboard
+    charts: example-org/charts
+    claude: example-org/claude
+
+# ── Application services ──────────────────────────────────────────────────────
+services:
+  api:
+    lang: go
+    go_version: "1.25"
+    module: github.com/example-org/api
+    framework: gin
+    port: 8080
+    dir: api
+  dashboard:
+    lang: node
+    framework: next14
+    package: example-dashboard
+    port: 3000
+    dir: dashboard
+
+# ── Deployment platform ───────────────────────────────────────────────────────
+# `provider` is the dispatch key the deploy-app skill branches on.
+platform:
+  # ----- Option A: Civo / Helm -----
+  provider: civo-helm
+  namespace: example                   # k8s namespace for app releases
+  registry: ghcr.io/example-org        # image registry prefix
+  verify_url: https://example.com      # hit after deploy to confirm 2xx/3xx
+  deploys:                             # per-service: image + helm release + chart
+    api:
+      image: ghcr.io/example-org/api
+      release: example-api
+      chart: charts/example-api
+    dashboard:
+      image: ghcr.io/example-org/dashboard
+      release: example-dashboard
+      chart: charts/example-dashboard
+
+  # ----- Option B: GCP / Cloud Run (swap the block above for this) -----
+  # provider: gcp-cloudrun
+  # verify_url: https://app.example.com
+  # deploys:
+  #   dashboard:
+  #     image: us-central1-docker.pkg.dev/example-gcp/registry/app
+  #     service: app-preprod           # Cloud Run service name
+  #     region: us-central1
+  #     project: example-gcp           # GCP project id
+
+# ── Design iterations (optional) ──────────────────────────────────────────────
+# Only needed if the project receives design handoff zips (design-iteration skill).
+design:
+  archive_dir: ~/git/github/example-project/claude-design-archive
+  app_dir: dashboard                   # which service the design maps to

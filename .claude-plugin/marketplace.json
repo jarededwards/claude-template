@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "claude-template",
+  "owner": {
+    "name": "Jared Edwards",
+    "email": "jredwards519@gmail.com"
+  },
+  "description": "Generic, manifest-driven agents and skills for app-platform projects. Every project-specific value lives in the consuming repo's .claude/project.yml — the plugin logic is identical everywhere.",
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "app-platform",
+      "source": "app-platform",
+      "description": "Frontend/backend/orchestrator agents + github-issues, deploy-app, and design-iteration skills. Driven by .claude/project.yml."
+    }
+  ]
+}

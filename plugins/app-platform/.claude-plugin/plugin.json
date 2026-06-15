@@ -1,0 +1,13 @@
+{
+  "name": "app-platform",
+  "displayName": "App Platform",
+  "version": "0.1.0",
+  "description": "Manifest-driven agents and skills shared across app-platform projects. Reads .claude/project.yml from the consuming project for all project-specific values.",
+  "author": {
+    "name": "Jared Edwards",
+    "email": "jredwards519@gmail.com"
+  },
+  "repository": "https://github.com/jarededwards/claude-template",
+  "license": "MIT",
+  "keywords": ["agents", "skills", "deploy", "helm", "cloud-run", "manifest-driven"]
+}
